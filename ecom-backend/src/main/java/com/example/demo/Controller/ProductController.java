@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/product/")
+@CrossOrigin("*")
 public class ProductController {
 
     @Autowired
