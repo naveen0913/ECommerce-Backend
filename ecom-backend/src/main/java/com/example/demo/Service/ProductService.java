@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -16,14 +17,22 @@ public class ProductService {
     @Autowired
     ProductRepo productRepo;
 
-    public ResponseEntity<?> addProduct(Product product) {
+    public void addProduct(Product product) {
          productRepo.save(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new CustomResponse(HttpStatus.CREATED.value(), "created",product));
 
     }
 
-    public ResponseEntity<?> getAllProducts() {
-        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(HttpStatus.OK.value(),"available", productRepo.findAll()));
+    public CustomResponse getProductById(String productId){
+        Optional<Product> existedProduct = productRepo.findById(productId);
+        if (existedProduct.isEmpty()){
+            new CustomResponse(HttpStatus.NOT_FOUND.value(), "unavailable",null);
+        }
+       return new CustomResponse(HttpStatus.OK.value(), "success",existedProduct);
+
+    }
+
+    public List<Product> getAllProducts() {
+      return productRepo.findAll();
 
 
     }
