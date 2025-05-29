@@ -36,8 +36,7 @@ public class WebConfig {
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
-                .httpBasic()
-                .and()
+
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Disable sessions
                 );

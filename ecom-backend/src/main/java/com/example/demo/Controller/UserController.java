@@ -11,23 +11,33 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/user/")
 @CrossOrigin("*")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("user/signup")
+
+    @PostMapping("/signup")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createUser(@RequestBody SignUpDTO signUpDTO){
+    public CustomResponse createUser(@RequestBody SignUpDTO signUpDTO){
         return userService.registerUser(signUpDTO,false);
     }
 
-    @PostMapping("user/login")
+    @PostMapping("/login")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> userLogin(@RequestBody LoginDTO loginDTO){
+    public CustomResponse userLogin(@RequestBody LoginDTO loginDTO){
         return userService.userLogin(loginDTO);
     }
 
+    @GetMapping("/{userId}")
+    public CustomResponse getUserById(@PathVariable String userId){
+        return userService.getUserById(userId);
+    }
+
+    @PutMapping("update/{userId}")
+    public CustomResponse updateUser(@PathVariable String userId,@RequestBody SignUpDTO signUpDTO){
+        return userService.updateUserDetails(userId,signUpDTO);
+    }
 }
